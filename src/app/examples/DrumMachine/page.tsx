@@ -28,8 +28,8 @@ const App: React.FC = () => {
         id="drum-machine"
         className="shadow-2xl rounded-lg dark:bg-white bg-black"
       >
-        <div className="grid grid-cols-2">
-          <div className="grid grid-rows-3 grid-cols-3 gap-x-8 gap-y-4 p-5 w-[19rem]">
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="grid grid-rows-3 grid-cols-3 gap-x-8 gap-y-4 p-5 w-max-md">
             {soundData.sounds.map((sound) => (
               <Button
                 key={sound.id}
