@@ -12,14 +12,9 @@ interface ButtonsInput {
   countdown: boolean;
   onResetClick: () => void;
   isSession: boolean;
-  onStartLoop: () => void;
-  onPauseLoop: () => void;
-  handleButtonClick: () => void;
 }
 
 export default function Buttons({
-  onStartLoop,
-  onPauseLoop,
   isSession,
   startValuesBreak,
   timerBreak,
@@ -32,51 +27,26 @@ export default function Buttons({
 }: ButtonsInput): JSX.Element {
   const [isRunning, setIsRunning] = useState(false);
 
-  const handleButtonClick = () => {
-    if (isRunning) {
-      console.log("pause");
-      timer.pause();
-      timerBreak.pause();
-      onPauseLoop(); // call onStopLoop here
-    } else {
-      console.log("start");
-      timer.start({
-        startValues,
-        countdown,
-        target: { minutes: 0, seconds: 0 },
-      });
-      timerBreak.start({
-        startValues: startValuesBreak,
-        countdown,
-        target: { minutes: 0, seconds: 0 },
-      });
-      onStartLoop(); // call onStartLoop here
-    }
-    setIsRunning(!isRunning);
-  };
-
   const handleResetClick = () => {
     timer.reset();
-    timerBreak.reset();
+    timerBreak.reset()
     setIsRunning(false);
-    onResetClick();
     timer.stop();
-    timerBreak.stop();
+    timerBreak.stop()
+    onResetClick();
   };
 
   return (
     <div className="flex items-center justify-center py-5 gap-4">
       <button
         onClick={handleButtonClick}
-        className={`p-2 rounded-lg ${
-          isRunning ? "bg-red-500" : "bg-green-500"
-        } text-white w-20 font-black hover:scale-105`}
+        className="p-2 rounded-lg bg-white text-black w-20"
         id="start_stop"
       >
         {isRunning ? "Stop" : "Start"}
       </button>
       <button
-        className="p-2 rounded-lg bg-white text-black w-20 font-black hover:scale-105"
+        className="p-2 rounded-lg bg-white text-black w-20"
         id="reset"
         onClick={handleResetClick}
       >

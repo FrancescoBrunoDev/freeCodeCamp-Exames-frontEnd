@@ -18,13 +18,22 @@ export default function ScreenTimer({
   timeValues,
   isTargetAchieved,
 }: TimerInput): JSX.Element {
+  const [isRunning, setIsRunning] = useState(false);
 
+  useEffect(() => {
+    if (isTargetAchieved && timeValues.toString() === "00:00") {
+      const beep = document.getElementById("beep") as HTMLAudioElement;
+      beep.currentTime = 0;
+      beep.play();
+    }
+  }, [isTargetAchieved, timeValues]);
+  console.log(timeValues.toString());
   return (
     <div className="flex items-center justify-center">
       <div>
         <h1
           id="timer-label"
-          className="flex items-center justify-center text-lg font-black"
+          className="flex items-center justify-center text-lg"
         >
           {!isSession ? "Break" : "Session"}
         </h1>
@@ -46,7 +55,7 @@ export default function ScreenTimer({
           </h1>
         </div>
       </div>
-      <audio id="beep" src="/beep.mp3" />
+      <audio id="beep" src="/beep.wav" />
     </div>
   );
 }

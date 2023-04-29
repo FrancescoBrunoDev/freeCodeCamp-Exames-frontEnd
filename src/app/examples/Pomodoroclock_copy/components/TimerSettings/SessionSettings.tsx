@@ -22,8 +22,8 @@ const SessionSettings: React.FC<Props> = ({ minutes, onMinutesChange }) => {
   return (
     <div className="grid">
       <div id="session-label" className="flex items-center justify-center pb-3">
-        <div className="bg-black rounded-lg text-center p-3 w-full">
-          <h1 className="text-white font-black">Session Length</h1>
+        <div className="bg-black rounded-lg p-3">
+          <h1 className="text-white">Session Length</h1>
         </div>
       </div>
       <div className="bg-black text-white p-5 rounded-lg shadow-xl flex items-center justify-center h-24">
