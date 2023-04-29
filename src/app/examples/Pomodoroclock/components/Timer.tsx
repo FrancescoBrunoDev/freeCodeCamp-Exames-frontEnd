@@ -6,17 +6,14 @@ import Timer from "easytimer.js";
 interface TimerInput {
   isSession: boolean;
   timer: Timer;
-  isTargetAchieved: boolean;
   timeValues: TimeCounter;
   timeValuesBreak: TimeCounter;
-  startValues: TimeValues;
 }
 
 export default function ScreenTimer({
   isSession,
   timeValuesBreak,
   timeValues,
-  isTargetAchieved,
 }: TimerInput): JSX.Element {
 
   return (

@@ -5,13 +5,10 @@ import { TimeValues } from "../types";
 interface ButtonsInput {
   startValuesBreak: TimeValues;
   timerBreak: Timer;
-  isTargetAchieved: boolean;
   timer: Timer;
   startValues: TimeValues;
-  target?: TimeValues;
   countdown: boolean;
   onResetClick: () => void;
-  isSession: boolean;
   onStartLoop: () => void;
   onPauseLoop: () => void;
   handleButtonClick: () => void;
@@ -20,13 +17,10 @@ interface ButtonsInput {
 export default function Buttons({
   onStartLoop,
   onPauseLoop,
-  isSession,
   startValuesBreak,
   timerBreak,
-  isTargetAchieved,
   timer,
   startValues,
-  target,
   countdown,
   onResetClick,
 }: ButtonsInput): JSX.Element {

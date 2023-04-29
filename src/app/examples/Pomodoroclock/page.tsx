@@ -6,7 +6,7 @@ import SessionSettings from "./components/TimerSettings/SessionSettings";
 import BreakSettings from "./components/TimerSettings/BreakSettings";
 import useTimer from "easytimer-react-hook";
 import { useState } from "react";
-import Timer from "./components/Timer";
+import ScreenTimer from "./components/Timer";
 
 const Pomodoroclock = (): JSX.Element => {
   const [isCountdown, setIsCountdown] = useState(true);
@@ -121,12 +121,11 @@ const Pomodoroclock = (): JSX.Element => {
           />
         </div>
         <div className="w-full bg-black text-white p-5 rounded-lg shadow-xl grid-rows-2 ">
-          <Timer
-            isTargetAchieved={isTargetAchieved}
+          <ScreenTimer
             timeValues={timer.getTimeValues()}
             timeValuesBreak={timerBreak.getTimeValues()}
-            startValues={startValuesSession}
             isSession={isSession}
+            timer={timer}
           />
 
           <Buttons
