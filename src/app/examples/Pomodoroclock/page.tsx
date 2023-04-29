@@ -25,7 +25,6 @@ const Pomodoroclock = (): JSX.Element => {
     minutes: 25,
     seconds: 0,
   } as TimeValuesSession);
-  
 
   const handleMinutesChangeSession = (newMinutes: number) => {
     setStartValuesSession((prevStartValues) => ({
