@@ -1,34 +1,31 @@
 import { TimeCounter } from "easytimer.js";
-import { TimeCounterBreak } from "easytimer.js";
 import React, { useState, useEffect } from "react";
-import { TimeValues, TimeValuesBreak } from "../types";
+import { TimeValues } from "../types";
 import Timer from "easytimer.js";
 
 interface TimerInput {
   timer: Timer;
   isTargetAchieved: boolean;
   timeValues: TimeCounter;
+  timeValuesBreak: TimeCounter;
   startValues: TimeValues;
 }
 
 export default function ScreenTimer({
+  timeValuesBreak,
   timeValues,
   isTargetAchieved,
 }: TimerInput): JSX.Element {
   const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
-    if (isTargetAchieved) {
-      const beep = new Audio("/beep.wav");
+    if (isTargetAchieved && timeValues.toString() === "0:00:00") {
+      const beep = document.getElementById("beep") as HTMLAudioElement;
+      beep.currentTime = 0;
       beep.play();
-      setTimeout(() => {
-        beep.pause();
-        beep.currentTime = 0;
-      }, 1000);
     }
-  }, [isTargetAchieved]);
+  }, [isTargetAchieved, timeValues]);
 
-  
   return (
     <div className="flex items-center justify-center">
       <div>
@@ -43,7 +40,7 @@ export default function ScreenTimer({
             {isTargetAchieved ? (
               <div>
                 <span id="time-left">
-                  {timeValues.toString(["minutes", "seconds"])}
+                  {timeValuesBreak.toString(["minutes", "seconds"])}
                 </span>
               </div>
             ) : (
@@ -56,6 +53,7 @@ export default function ScreenTimer({
           </h1>
         </div>
       </div>
+      <audio id="beep" src="beep.mp3" />
     </div>
   );
 }

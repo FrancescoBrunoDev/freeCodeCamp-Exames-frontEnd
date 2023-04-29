@@ -1,13 +1,11 @@
 "use client";
 
 import { TimeValues, TimeValuesBreak } from "./types";
-import ScreenTimer from "./components/Timer";
 import Buttons from "./components/Buttons";
 import SessionSettings from "./components/TimerSettings/SessionSettings";
 import BreakSettings from "./components/TimerSettings/BreakSettings";
 import useTimer from "easytimer-react-hook";
 import { useState } from "react";
-import { useEffect } from "react";
 import Timer from "./components/Timer";
 
 const Pomodoroclock = (): JSX.Element => {
@@ -19,10 +17,13 @@ const Pomodoroclock = (): JSX.Element => {
   const [isCountdown, setIsCountdown] = useState(true);
   const [updateWhenTargetAchieved, setUpdateWhenTargetAchieved] =
     useState(true);
-  const [updateWhenTargetAchievedBreak, setUpdateWhenTargetAchievedBreak] =
-    useState(true);
   const [timer, isTargetAchieved] = useTimer({ updateWhenTargetAchieved });
-  const [timerBreak] = useTimer({ updateWhenTargetAchieved });
+  const [timerBreak, isTargetAchievedBreak] = useTimer({ updateWhenTargetAchieved });
+
+  const [startValuesBreak, setStartValuesBreak] = useState({
+    minutes: 5,
+    seconds: 0,
+  } as TimeValuesBreak);
 
   const handleMinutesChange = (newMinutes: number) => {
     setStartValues((prevStartValues) => ({
@@ -30,11 +31,6 @@ const Pomodoroclock = (): JSX.Element => {
       minutes: newMinutes,
     }));
   };
-
-  const [startValuesBreak, setStartValuesBreak] = useState({
-    minutes: 5,
-    seconds: 0,
-  } as TimeValuesBreak);
 
   const handleMinutesChangeBreak = (newMinutes: number) => {
     setStartValuesBreak((prevStartValues) => ({
@@ -47,6 +43,18 @@ const Pomodoroclock = (): JSX.Element => {
     setStartValues({ minutes: 25, seconds: 0 });
     setStartValuesBreak({ minutes: 5, seconds: 0 });
   };
+
+  // Check if the target is achieved for the session timer
+  if (isTargetAchieved && updateWhenTargetAchieved) {
+    // Stop updating the timer automatically when the target is achieved
+    setUpdateWhenTargetAchieved(false);
+
+    // Update the break time to the remaining time
+    setStartValuesBreak(timerBreak.getTimeValues() as TimeValuesBreak);
+
+    // Start a new timer for the break time
+    timerBreak.start({ startValues: startValuesBreak, countdown: true });
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center">
@@ -66,7 +74,6 @@ const Pomodoroclock = (): JSX.Element => {
             isTargetAchieved={isTargetAchieved}
             timeValues={timer.getTimeValues()}
             timeValuesBreak={timerBreak.getTimeValues()}
-            startValuesBreak={startValuesBreak}
             startValues={startValues}
             countdown={isCountdown}
           />
