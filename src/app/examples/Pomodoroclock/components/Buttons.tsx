@@ -1,6 +1,7 @@
 import Timer, { Precision } from "easytimer.js";
 import React, { useState } from "react";
 import { TimeValues } from "../types";
+import { Slabo_13px } from "next/font/google";
 
 interface ButtonsInput {
   startValuesBreak: TimeValues;
@@ -12,9 +13,11 @@ interface ButtonsInput {
   onStartLoop: () => void;
   onPauseLoop: () => void;
   handleButtonClick: () => void;
+  isSession: boolean;
 }
 
 export default function Buttons({
+  isSession,
   onStartLoop,
   onPauseLoop,
   startValuesBreak,
@@ -29,25 +32,31 @@ export default function Buttons({
   const handleButtonClick = () => {
     if (isRunning) {
       console.log("pause");
-      timer.pause();
-      timerBreak.pause();
+      if (isSession) {
+        timer.pause();
+      } else {
+        timerBreak.pause();
+      }
       onPauseLoop(); // call onStopLoop here
     } else {
       console.log("start");
-      timer.start({
-        startValues,
-        countdown,
-        target: { minutes: 0, seconds: 0 },
-      });
-      timerBreak.start({
-        startValues: startValuesBreak,
-        countdown,
-        target: { minutes: 0, seconds: 0 },
-      });
+      if (isSession) {
+        timer.start({
+          startValues,
+          countdown,
+          target: { minutes: 0, seconds: 0 },
+        });
+      } else {
+        timerBreak.start({
+          startValues: startValuesBreak,
+          countdown,
+        });
+      }
       onStartLoop(); // call onStartLoop here
     }
     setIsRunning(!isRunning);
   };
+  
 
   const handleResetClick = () => {
     timer.reset();

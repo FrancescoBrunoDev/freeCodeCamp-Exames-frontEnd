@@ -26,20 +26,6 @@ const Pomodoroclock = (): JSX.Element => {
     seconds: 0,
   } as TimeValuesSession);
 
-  const handleMinutesChangeSession = (newMinutes: number) => {
-    setStartValuesSession((prevStartValues) => ({
-      ...prevStartValues,
-      minutes: newMinutes,
-    }));
-  };
-
-  const handleMinutesChangeBreak = (newMinutes: number) => {
-    setStartValuesBreak((prevStartValues) => ({
-      ...prevStartValues,
-      minutes: newMinutes,
-    }));
-  };
-
   const handleResetClick = () => {
     setStartValuesSession({ minutes: 25, seconds: 0 });
     setStartValuesBreak({ minutes: 5, seconds: 0 });
@@ -59,13 +45,11 @@ const Pomodoroclock = (): JSX.Element => {
       timerBreak.pause();
     } else {
       setIsRunning(true);
-      timer.start({
-        startValues: startValuesSession,
-        target: { minutes: 0, seconds: 0 },
-      });
       timerBreak.start({
-        startValues: startValuesBreak,
-        target: { minutes: 0, seconds: 0 },
+
+      });
+      timer.start({
+
       });
     }
   };
@@ -77,18 +61,32 @@ const Pomodoroclock = (): JSX.Element => {
     timerBreak.pause();
   };
 
+  const handleMinutesChangeSession = (newMinutes: number) => {
+    setStartValuesSession((prevStartValues) => ({
+      ...prevStartValues,
+      minutes: newMinutes,
+    }));
+  };
+
+  const handleMinutesChangeBreak = (newMinutes: number) => {
+    setStartValuesBreak((prevStartValues) => ({
+      ...prevStartValues,
+      minutes: newMinutes,
+    }));
+  };
+
   timer.addEventListener("targetAchieved", () => {
-    setStartValuesBreak(timer.getTimeValues() as TimeValuesBreak);
     setTimeout(() => {
       setIsSession(false);
+      setStartValuesBreak(startValuesBreak)
       timerBreak.start({ startValues: startValuesBreak });
     }, 1000);
   });
 
   timerBreak.addEventListener("targetAchieved", () => {
-    setStartValuesSession(timerBreak.getTimeValues() as TimeValuesSession);
     setTimeout(() => {
       setIsSession(true);
+      setStartValuesSession(startValuesSession);
       timer.start({ startValues: startValuesSession });
     }, 1000);
   });
@@ -106,6 +104,8 @@ const Pomodoroclock = (): JSX.Element => {
   timerBreak.addEventListener("targetAchieved", () => {
     playbeep();
   });
+
+  console.log(isSession)
 
   return (
     <div className="flex min-h-screen items-center justify-center">
@@ -138,6 +138,7 @@ const Pomodoroclock = (): JSX.Element => {
             handleButtonClick={onStartLoop}
             onStartLoop={onStartLoop}
             onPauseLoop={onPauseLoop}
+            isSession={isSession}
           />
         </div>
       </div>
