@@ -16,12 +16,12 @@ const Pomodoroclock = (): JSX.Element => {
   const [isRunning, setIsRunning] = useState(false);
 
   const [startValuesBreak, setStartValuesBreak] = useState({
-    minutes: 25,
+    minutes: 5,
     seconds: 0,
   } as TimeValues);
 
   const [startValuesSession, setStartValuesSession] = useState({
-    minutes: 5,
+    minutes: 25,
     seconds: 0,
   } as TimeValues);
 
