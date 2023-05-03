@@ -3,25 +3,21 @@ import React, { useState } from "react";
 import { TimeValues } from "../types";
 
 interface ButtonsInput {
-  startValuesBreak: TimeValues;
   timerBreak: Timer;
   timer: Timer;
-  startValues: TimeValues;
+  startValuesSession: TimeValues;
+  startValuesBreak: TimeValues;
   countdown: boolean;
   onResetClick: () => void;
-  onStartLoop: () => void;
-  onPauseLoop: () => void;
-  handleButtonClick: () => void;
+  isSession: boolean;
 }
 
 export default function Buttons({
-  onStartLoop,
-  onPauseLoop,
+  isSession,
   startValuesBreak,
   timerBreak,
   timer,
-  startValues,
-  countdown,
+  startValuesSession,
   onResetClick,
 }: ButtonsInput): JSX.Element {
   const [isRunning, setIsRunning] = useState(false);
@@ -29,24 +25,25 @@ export default function Buttons({
   const handleButtonClick = () => {
     if (isRunning) {
       console.log("pause");
-      timer.pause();
-      timerBreak.pause();
-      onPauseLoop(); // call onStopLoop here
+      if (isSession) {
+        timer.pause();
+      } else {
+        timerBreak.pause();
+      }
+      setIsRunning(false);
     } else {
       console.log("start");
-      timer.start({
-        startValues,
-        countdown,
-        target: { minutes: 0, seconds: 0 },
-      });
-      timerBreak.start({
-        startValues: startValuesBreak,
-        countdown,
-        target: { minutes: 0, seconds: 0 },
-      });
-      onStartLoop(); // call onStartLoop here
+      if (isSession) {
+        timer.start({
+          startValues: startValuesSession,
+        });
+      } else {
+        timerBreak.start({
+          //startValues: startValuesBreak, 
+        });
+      }
+      setIsRunning(true);
     }
-    setIsRunning(!isRunning);
   };
 
   const handleResetClick = () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { TimeValues, TimeValuesBreak, TimeValuesSession } from "./types";
+import { TimeValues } from "./types";
 import Buttons from "./components/Buttons";
 import SessionSettings from "./components/TimerSettings/SessionSettings";
 import BreakSettings from "./components/TimerSettings/BreakSettings";
@@ -9,22 +9,21 @@ import { useState } from "react";
 import ScreenTimer from "./components/Timer";
 
 const Pomodoroclock = (): JSX.Element => {
-  const [isCountdown, setIsCountdown] = useState(true);
-  const [timer, isTargetAchieved] = useTimer({ countdown: true });
+  const [isCountdown] = useState(true);
+  const [timer] = useTimer({ countdown: true });
   const [timerBreak] = useTimer({ countdown: true });
   const [isSession, setIsSession] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
-  const [timeValues, setTimeValues] = useState({ minutes: 25, seconds: 0 });
 
   const [startValuesBreak, setStartValuesBreak] = useState({
-    minutes: 5,
-    seconds: 0,
-  } as TimeValuesBreak);
+    minutes: 0,
+    seconds: 5,
+  } as TimeValues);
 
   const [startValuesSession, setStartValuesSession] = useState({
-    minutes: 25,
-    seconds: 0,
-  } as TimeValuesSession);
+    minutes: 0,
+    seconds: 7,
+  } as TimeValues);
 
   const handleMinutesChangeSession = (newMinutes: number) => {
     setStartValuesSession((prevStartValues) => ({
@@ -40,6 +39,24 @@ const Pomodoroclock = (): JSX.Element => {
     }));
   };
 
+  timer.addEventListener("targetAchieved", () => {
+    setTimeout(() => {
+      setIsSession(false);
+      setStartValuesBreak(startValuesBreak)
+      console.log(startValuesBreak, "Break")
+      timerBreak.start({ startValues: startValuesBreak });
+    }, 1000);
+  });
+
+  timerBreak.addEventListener("targetAchieved", () => {
+    setTimeout(() => {
+      setIsSession(true);
+      setStartValuesSession(startValuesSession);
+      console.log(startValuesSession, "Session")
+      timer.start({ startValues: startValuesSession });
+    }, 1000);
+  });
+
   const handleResetClick = () => {
     setStartValuesSession({ minutes: 25, seconds: 0 });
     setStartValuesBreak({ minutes: 5, seconds: 0 });
@@ -51,47 +68,6 @@ const Pomodoroclock = (): JSX.Element => {
     beep.pause();
     beep.currentTime = 0;
   };
-
-  const onStartLoop = () => {
-    if (!timer.isRunning()) {
-      setIsRunning(false);
-      timer.pause();
-      timerBreak.pause();
-    } else {
-      setIsRunning(true);
-      timer.start({
-        startValues: startValuesSession,
-        target: { minutes: 0, seconds: 0 },
-      });
-      timerBreak.start({
-        startValues: startValuesBreak,
-        target: { minutes: 0, seconds: 0 },
-      });
-    }
-  };
-
-  const onPauseLoop = () => {
-    console.log("Loop stopped");
-    setIsRunning(false);
-    timer.pause();
-    timerBreak.pause();
-  };
-
-  timer.addEventListener("targetAchieved", () => {
-    setStartValuesBreak(timer.getTimeValues() as TimeValuesBreak);
-    setTimeout(() => {
-      setIsSession(false);
-      timerBreak.start({ startValues: startValuesBreak });
-    }, 1000);
-  });
-
-  timerBreak.addEventListener("targetAchieved", () => {
-    setStartValuesSession(timerBreak.getTimeValues() as TimeValuesSession);
-    setTimeout(() => {
-      setIsSession(true);
-      timer.start({ startValues: startValuesSession });
-    }, 1000);
-  });
 
   function playbeep() {
     const beep = document.getElementById("beep") as HTMLAudioElement;
@@ -125,19 +101,16 @@ const Pomodoroclock = (): JSX.Element => {
             timeValues={timer.getTimeValues()}
             timeValuesBreak={timerBreak.getTimeValues()}
             isSession={isSession}
-            timer={timer}
           />
 
           <Buttons
             timer={timer}
             timerBreak={timerBreak}
-            startValues={startValuesSession}
+            startValuesSession={startValuesSession}
             startValuesBreak={startValuesBreak}
             countdown={isCountdown}
             onResetClick={handleResetClick}
-            handleButtonClick={onStartLoop}
-            onStartLoop={onStartLoop}
-            onPauseLoop={onPauseLoop}
+            isSession={isSession}
           />
         </div>
       </div>
