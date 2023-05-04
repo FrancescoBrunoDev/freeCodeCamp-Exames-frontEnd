@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import { TbBrandNextjs } from "react-icons/tb";
-import { TbBrandTailwind } from "react-icons/tb";
+import { TbBrandNextjs, TbBrandTailwind } from "react-icons/tb";
+import {VscGithubInverted} from "react-icons/vsc"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -95,6 +95,11 @@ export default function Home() {
         </Link>
         <Link href="https://tailwindcss.com/">
           <TbBrandTailwind className=" opacity-50" />
+        </Link>
+
+        <div className="m-0 text-sm opacity-80">code available on</div>
+        <Link href="https://github.com/franzbruno95/freeCodeCamp-Exames-frontEnd">
+          <VscGithubInverted className="opacity-50" />
         </Link>
       </div>
     </main>
