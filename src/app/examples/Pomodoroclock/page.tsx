@@ -7,6 +7,7 @@ import BreakSettings from "./components/TimerSettings/BreakSettings";
 import useTimer from "easytimer-react-hook";
 import { useState } from "react";
 import ScreenTimer from "./components/Timer";
+import { initialState } from "../JavaScriptCalculator/myReactCalculator/reducer";
 
 const Pomodoroclock = (): JSX.Element => {
   const [isCountdown] = useState(true);
@@ -14,16 +15,20 @@ const Pomodoroclock = (): JSX.Element => {
   const [timerBreak] = useTimer({ countdown: true });
   const [isSession, setIsSession] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
+  const [isLooping, setIsLooping] = useState(false);
 
   const [startValuesBreak, setStartValuesBreak] = useState({
-    minutes: 25,
+    minutes: 5,
     seconds: 0,
   } as TimeValues);
 
   const [startValuesSession, setStartValuesSession] = useState({
-    minutes: 5,
+    minutes: 25,
     seconds: 0,
   } as TimeValues);
+  const initialTime = !isLooping
+    ? `${startValuesSession.minutes.toString().padStart(2, "0")}:00`
+    : null;
 
   const handleMinutesChangeSession = (newMinutes: number) => {
     setStartValuesSession((prevStartValues) => ({
@@ -39,36 +44,6 @@ const Pomodoroclock = (): JSX.Element => {
     }));
   };
 
-  timer.addEventListener("targetAchieved", () => {
-    setTimeout(() => {
-      setIsSession(false);
-      setStartValuesBreak(startValuesBreak)
-      console.log(startValuesBreak, "Break")
-      timerBreak.start({ startValues: startValuesBreak });
-    }, 1000);
-  });
-
-  timerBreak.addEventListener("targetAchieved", () => {
-    setTimeout(() => {
-      setIsSession(true);
-      setStartValuesSession(startValuesSession);
-      console.log(startValuesSession, "Session")
-      timer.start({ startValues: startValuesSession });
-    }, 1000);
-  });
-
-  const handleResetClick = () => {
-    setStartValuesSession({ minutes: 25, seconds: 0 });
-    setStartValuesBreak({ minutes: 5, seconds: 0 });
-    setIsSession(true);
-    setIsRunning(false);
-    timer.reset();
-    timerBreak.reset();
-    const beep = document.getElementById("beep") as HTMLAudioElement;
-    beep.pause();
-    beep.currentTime = 0;
-  };
-
   function playbeep() {
     const beep = document.getElementById("beep") as HTMLAudioElement;
     beep.currentTime = 0;
@@ -76,13 +51,36 @@ const Pomodoroclock = (): JSX.Element => {
   }
 
   timer.addEventListener("targetAchieved", () => {
+    setTimeout(() => {
+      setIsSession(false);
+      timerBreak.start({});
+    }, 1000);
     playbeep();
   });
 
   timerBreak.addEventListener("targetAchieved", () => {
+    setTimeout(() => {
+      setIsSession(true);
+      timer.start({ startValues: startValuesSession });
+    }, 1000);
     playbeep();
   });
 
+  const handleResetClick = () => {
+    setStartValuesSession({ minutes: 25, seconds: 0 });
+    setStartValuesBreak({ minutes: 5, seconds: 0 });
+    initialState;
+    setIsSession(true);
+    setIsRunning(false);
+    setIsLooping(false);
+    timer.reset();
+    timerBreak.reset();
+    const beep = document.getElementById("beep") as HTMLAudioElement;
+    beep.pause();
+    beep.currentTime = 0;
+  };
+
+  console.log(isRunning, "isRunning");
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="grid grid-rows-2 align-baseline ">
@@ -101,6 +99,8 @@ const Pomodoroclock = (): JSX.Element => {
             timeValues={timer.getTimeValues()}
             timeValuesBreak={timerBreak.getTimeValues()}
             isSession={isSession}
+            isRunning={isRunning}
+            initialTime={initialTime}
           />
 
           <Buttons
@@ -111,6 +111,9 @@ const Pomodoroclock = (): JSX.Element => {
             countdown={isCountdown}
             onResetClick={handleResetClick}
             isSession={isSession}
+            isRunning={isRunning}
+            setIsRunning={setIsRunning}
+            setIsLooping={setIsLooping}
           />
         </div>
       </div>

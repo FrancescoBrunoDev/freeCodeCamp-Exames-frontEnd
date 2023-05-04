@@ -5,12 +5,16 @@ interface TimerInput {
   isSession: boolean;
   timeValues: TimeCounter;
   timeValuesBreak: TimeCounter;
+  isRunning: boolean;
+  initialTime: string | null;
 }
 
 export default function ScreenTimer({
   isSession,
   timeValuesBreak,
   timeValues,
+  isRunning,
+  initialTime,
 }: TimerInput): JSX.Element {
   const displayTimeValues = isSession ? timeValues : timeValuesBreak;
 
@@ -25,7 +29,9 @@ export default function ScreenTimer({
         </h1>
         <div className="flex items-center justify-center">
           <h1 className="text-6xl font-black">
-            <span id="time-left">{displayTimeValues.toString(["minutes", "seconds"])}</span>
+            <span id="time-left">
+              {initialTime || displayTimeValues.toString(["minutes", "seconds"])}
+            </span>
           </h1>
         </div>
       </div>
