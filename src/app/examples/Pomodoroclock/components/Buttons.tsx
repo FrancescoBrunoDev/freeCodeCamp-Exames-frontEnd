@@ -10,6 +10,9 @@ interface ButtonsInput {
   countdown: boolean;
   onResetClick: () => void;
   isSession: boolean;
+  isRunning: boolean;
+  setIsRunning: (isRunning: boolean) => void;
+  setIsLooping: (isLooping: boolean) => void;
 }
 
 export default function Buttons({
@@ -19,8 +22,10 @@ export default function Buttons({
   timer,
   startValuesSession,
   onResetClick,
+  isRunning,
+  setIsRunning,
+  setIsLooping,
 }: ButtonsInput): JSX.Element {
-  const [isRunning, setIsRunning] = useState(false);
 
   const handleButtonClick = () => {
     if (isRunning) {
@@ -37,11 +42,18 @@ export default function Buttons({
         timer.start({
           startValues: startValuesSession,
         });
+        timerBreak.start({
+          startValues: {
+            minutes: startValuesBreak.minutes + startValuesSession.minutes,
+            seconds: startValuesBreak.seconds + startValuesSession.seconds,
+          },
+        });
       } else {
         timerBreak.start({
           //startValues: startValuesBreak, 
         });
       }
+      setIsLooping(true);
       setIsRunning(true);
     }
   };
