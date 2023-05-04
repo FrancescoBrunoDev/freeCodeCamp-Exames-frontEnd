@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
 
-First, run the development server:
+# FreeCodeCamp Front End Course Exam Project
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+This project is the exam for the FreeCodeCamp Front End Course. The aim of the project was to build 5 web applications using Next.js with Tailwind CSS. The web applications are:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Random Quote Machine
+2. Markdown Previewer
+3. Drum Machine
+4. JavaScript Calculator
+5. 25 + 5 Clock
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+All 5 projects have been completed within the timeframe of 25th April to 4th May 2023.
 
-[http://localhost:3000/api/hello](http://localhost:3000/api/hello) is an endpoint that uses [Route Handlers](https://beta.nextjs.org/docs/routing/route-handlers). This endpoint can be edited in `app/api/hello/route.ts`.
+## Random Quote Machine
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+The Random Quote Machine is a web application that displays a random quote each time the user clicks on the "New Quote" button. The user can also tweet the displayed quote by clicking on the "Tweet" button.
 
-## Learn More
+## Markdown Previewer
 
-To learn more about Next.js, take a look at the following resources:
+The Markdown Previewer is a web application that converts Markdown text into HTML code in real-time. The user can input Markdown text into the editor and the preview panel will display the rendered HTML output.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Drum Machine
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The Drum Machine is a web application that simulates a drum kit. The user can play the drum kit by clicking on the buttons or by pressing the corresponding keys on the keyboard.
 
-## Deploy on Vercel
+## JavaScript Calculator
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The JavaScript Calculator is a web application that performs basic arithmetic operations. The user can input numbers and use the calculator buttons to perform addition, subtraction, multiplication, and division.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 25 + 5 Clock
+
+The 25 + 5 Clock is a web application that functions as a countdown timer. The user can set the work time and break time intervals and the timer will switch between the two intervals.
+
+All of the above web applications have been built using Next.js with Tailwind CSS. The project has been uploaded to GitHub and is available for viewing and download.
+
+Thanks for checking out my project!
